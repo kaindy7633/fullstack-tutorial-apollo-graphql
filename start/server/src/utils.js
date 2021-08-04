@@ -1,5 +1,10 @@
 const SQL = require('sequelize');
 
+/**
+ * @description 创建分页
+ * @param {*} param0 
+ * @returns 
+ */
 module.exports.paginateResults = ({
   after: cursor,
   pageSize = 20,
@@ -28,6 +33,10 @@ module.exports.paginateResults = ({
     : results.slice(0, pageSize);
 };
 
+/**
+ * @description 创建 Store
+ * @returns 
+ */
 module.exports.createStore = () => {
   const Op = SQL.Op;
   const operatorsAliases = {
