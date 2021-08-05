@@ -13,7 +13,7 @@ module.exports = {
       });
       return {
         launches,
-        cursor: launches.length ? launches[launches.lenght - 1].cursor : null,
+        cursor: launches.length ? launches[launches.length - 1].cursor : null,
         hasMore: launches.length
           ? launches[launches.length - 1].cursor !== allLaunches[allLaunches.length - 1].cursor
           : false
