@@ -23,10 +23,12 @@ export const LAUNCH_TILE_DATA = gql`
 interface LaunchesProps extends RouteComponentProps {}
 
 const Launches: React.FC<LaunchesProps> = () => {
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, fetchMore } = useQuery<
     GETLaunchListTypes.GetLaunchList,
     GETLaunchListTypes.GetLaunchListVariables
   >(GET_LAUNCHES);
+
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   if (loading) return <Loading />;
   if (error) return <p>ERROR</p>;
@@ -39,6 +41,25 @@ const Launches: React.FC<LaunchesProps> = () => {
         data.launches.launches &&
         data.launches.launches.map((launch: any) => (
           <LaunchTile key={launch.id} launch={launch} />
+        ))}
+      {data.launches &&
+        data.launches.hasMore &&
+        (isLoadingMore ? (
+          <Loading />
+        ) : (
+          <Button
+            onClick={async () => {
+              setIsLoadingMore(true);
+              await fetchMore({
+                variables: {
+                  after: data.launches.cursor,
+                },
+              });
+              setIsLoadingMore(false);
+            }}
+          >
+            Load More
+          </Button>
         ))}
     </Fragment>
   );
